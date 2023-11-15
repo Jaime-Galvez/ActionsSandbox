@@ -1,0 +1,17 @@
+name: Change latest SHA
+
+on:
+    workflow_dispatch
+
+jobs:
+    change-sha:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Print Env"
+              run: | 
+                echo ${{ env.MINION }}
+            - name: "Change Env"
+              run: |
+                echo "MINION=PLATANO" >> "$GITHUB_ENV"
+        
+
