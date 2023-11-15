@@ -9,7 +9,7 @@ jobs:
         steps:
             - name: "Print Env"
               run: | 
-                echo ${{ env.MINION }}
+                echo ${{ vars.MINION }}
             - name: "Change Env"
               run: |
                 echo "MINION=PLATANO" >> "$GITHUB_ENV"
