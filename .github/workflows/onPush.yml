@@ -10,6 +10,10 @@ jobs:
     change-sha:
         runs-on: ubuntu-latest
         steps:
+            - name: "Checkout Code"
+              uses: actions/checkout@v4
+              with:
+                sparse-checkout: .
             - name: "Print Env"
               run: | 
                 echo ${{ vars.MINION }}
