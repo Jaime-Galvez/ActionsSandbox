@@ -3,6 +3,9 @@ name: Change latest SHA
 on:
     workflow_dispatch
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
     change-sha:
         runs-on: ubuntu-latest
