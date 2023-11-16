@@ -12,6 +12,9 @@ jobs:
                 echo ${{ vars.MINION }}
             - name: "Change Env"
               run: |
-                echo "MINION=PLATANO" >> "$GITHUB_ENV"
+                gh variable set MINION --body BENIS
+            - name: "Print Env, again"
+              run: |
+                echo ${{ vars.MINION }}
         
 
