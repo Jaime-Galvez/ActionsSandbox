@@ -20,5 +20,6 @@ jobs:
               if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
                 echo "Doin' stuff"
-                git branch $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 10)
+                git branch $CUR_HEAD
+                git push -u origin $CUR_HEAD
                 gh variable set PREV_HEAD --body $CUR_HEAD
