@@ -9,7 +9,6 @@ env:
 jobs:
     change-sha:
         runs-on: ubuntu-latest
-        permissions: write-all
         steps:
             - name: "Checkout Code"
               uses: actions/checkout@v4
@@ -17,9 +16,8 @@ jobs:
               run: |
                 echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
             - name: "Do stuff"
-              if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
-                echo "Doin' stuff"
-                git branch "SUPER_SAMPLE"
+                git branch "release/${MAYOR}.${NEXT_MINOR}.0"
                 git push -u origin "SUPER_SAMPLE"
                 gh variable set PREV_HEAD --body $CUR_HEAD
+                gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
