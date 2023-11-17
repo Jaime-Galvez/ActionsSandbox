@@ -13,16 +13,14 @@ jobs:
         steps:
             - name: "Checkout Code"
               uses: actions/checkout@v4
-              with:
-                sparse-checkout: .
+            - name: "Get the HEAD SHA"
+              run: |
+                echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
             - name: "Print Env"
+              if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
-                echo ${{ vars.MINION }}
+                echo "Hi, Mom!"
             - name: "Change Env"
               run: |
-                gh variable set MINION --body BENIS
-            - name: "Print Env, again"
-              run: |
-                echo ${{ vars.MINION }}
-        
+                gh variable set PREV_HEAD --body $CUR_HEAD
 
