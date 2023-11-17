@@ -8,6 +8,7 @@ env:
 
 jobs:
     change-sha:
+        permissions: write-all
         runs-on: ubuntu-latest
         steps:
             - name: "Checkout Code"
