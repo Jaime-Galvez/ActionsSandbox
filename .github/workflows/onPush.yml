@@ -16,11 +16,9 @@ jobs:
             - name: "Get the HEAD SHA"
               run: |
                 echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
-            - name: "Print Env"
+            - name: "Do stuff"
               if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
-                echo "Hi, Mom!"
-            - name: "Change Env"
-              run: |
+                echo "Doin' stuff"
+                git branch $(tr -dc A-Za-z0-9 < /dev/urandom | head -c 10)
                 gh variable set PREV_HEAD --body $CUR_HEAD
-
