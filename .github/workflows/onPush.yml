@@ -5,6 +5,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.TOLKIEN }}
+  NEXT_MINOR: ${{ vars.NEXT_MINOR }}
 
 jobs:
     change-sha:
@@ -22,4 +23,4 @@ jobs:
                 git branch $RELEASE_BRANCH
                 git push -u origin $RELEASE_BRANCH
                 gh variable set PREV_HEAD --body $CUR_HEAD
-                gh variable set NEXT_MINOR --body $((vars.NEXT_MINOR + 1))
+                gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
