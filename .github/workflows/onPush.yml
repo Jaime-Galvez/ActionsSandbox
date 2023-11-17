@@ -17,7 +17,7 @@ jobs:
                 echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
             - name: "Do stuff"
               run: | 
-                git branch "release/${MAYOR}.${NEXT_MINOR}.0"
+                git branch "release/${{var.MAYOR}}.${{var.NEXT_MINOR}}.0"
                 git push -u origin "SUPER_SAMPLE"
                 gh variable set PREV_HEAD --body $CUR_HEAD
                 gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
