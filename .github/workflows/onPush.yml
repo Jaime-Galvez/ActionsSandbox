@@ -20,6 +20,6 @@ jobs:
               if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
                 echo "Doin' stuff"
-                git branch $CUR_HEAD
-                git push -u origin $CUR_HEAD
+                git branch "SUPER_SAMPLE"
+                git push -u origin "SUPER_SAMPLE"
                 gh variable set PREV_HEAD --body $CUR_HEAD
