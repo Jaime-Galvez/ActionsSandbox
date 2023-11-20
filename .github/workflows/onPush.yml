@@ -6,6 +6,7 @@ on:
 env:
   GH_TOKEN: ${{ secrets.TOLKIEN }}
   NEXT_MINOR: ${{ vars.NEXT_MINOR }}
+  RELEASE_BRANCH: "release/${{vars.MAYOR}}.${{vars.NEXT_MINOR}}.0"
 
 jobs:
     change-sha:
@@ -17,7 +18,6 @@ jobs:
             - name: "Get the HEAD SHA"
               run: |
                 echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
-                echo 'RELEASE_BRANCH="release/${{vars.MAYOR}}.${{vars.NEXT_MINOR}}.0"' >> $GITHUB_ENV
             - name: "Do stuff"
               run: | 
                 git branch $RELEASE_BRANCH
