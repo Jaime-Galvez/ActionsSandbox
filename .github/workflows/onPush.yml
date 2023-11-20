@@ -20,6 +20,7 @@ jobs:
               run: |
                 echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
             - name: "Do stuff"
+              if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
               run: | 
                 git branch $RELEASE_BRANCH
                 git push -u origin $RELEASE_BRANCH
