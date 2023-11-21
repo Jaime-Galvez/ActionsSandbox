@@ -1,0 +1,28 @@
+name: Playing with Variables
+
+on:
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.TOLKIEN }}
+  MY_NUMBER: ${{ vars.MY_NUMBER }}
+
+jobs:
+  read-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Read it & change it!"
+        run: |
+          echo "The Variable stored in env is $MY_NUMBER"
+          echo "The Variable stored on the repository is ${{ vars.MY_NUMBER }}"
+          gh variable set MY_NUMBER --body $(( MY_NUMBER + 1))
+
+  read-it-again:
+    needs: read-variable
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Read it, again!"
+        run: |
+          echo "The Variable stored in env is $MY_NUMBER"
+          echo "The Variable stored on the repository is ${{ vars.MY_NUMBER }}"
+
