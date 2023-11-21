@@ -15,7 +15,7 @@ jobs:
         run: |
           echo "The Variable stored in env is $MY_NUMBER"
           echo "The Variable stored on the repository is ${{ vars.MY_NUMBER }}"
-          curl -L -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/Jaime-Galvez/ActionsSandbox/actions/variables/MY_NUMBER -d '$(( MY_NUMBER + 1 ))'
+          curl -L -X PATCH -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/Jaime-Galvez/ActionsSandbox/actions/variables/MY_NUMBER -d '{"name":"MY_NUMBER","value":"$(( MY_NUMBER + 1 ))"}'
 
   read-it-again:
     needs: read-variable
