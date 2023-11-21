@@ -11,6 +11,8 @@ jobs:
   read-variable:
     runs-on: ubuntu-latest
     steps:
+      - name: "okok, I'll checkout... bastards"
+        uses: actions/checkout@v4
       - name: "Read it & change it!"
         run: |
           echo "The Variable stored in env is $MY_NUMBER"
