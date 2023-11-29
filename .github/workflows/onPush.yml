@@ -32,7 +32,6 @@ jobs:
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
 
   do-stuff:
-    needs: change-sha
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
