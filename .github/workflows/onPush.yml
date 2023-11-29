@@ -33,11 +33,11 @@ jobs:
 
   do-stuff:
     needs: change-sha
-    if: needs.change-sha.result == 'success' || needs.change-sha.result == 'skipped'
+    if: always() && (needs.change-sha.result == 'success' || needs.change-sha.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
-        if: (always()) && (github.event_name == 'push' || github.ref_name == env.RELEASE_BRANCH)
+        if: github.event_name == 'push' || github.ref_name == env.RELEASE_BRANCH
         run: |
           curl -L \
             -X PATCH \
