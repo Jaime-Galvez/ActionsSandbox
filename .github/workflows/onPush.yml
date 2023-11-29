@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
-        if: github.event_name == 'push' || github.ref_name == env.RELEASE_BRANCH
+        if: (always()) && (github.event_name == 'push' || github.ref_name == env.RELEASE_BRANCH)
         run: |
           curl -L \
             -X PATCH \
