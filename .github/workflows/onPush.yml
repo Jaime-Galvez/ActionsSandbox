@@ -32,7 +32,8 @@ jobs:
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
 
   do-stuff:
-    if: github.event_name == 'push'
+    needs: change-sha
+    if: needs.change-sha.result == 'success' || needs.change-sha.result == 'skipped'
     runs-on: ubuntu-latest
     steps:
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
