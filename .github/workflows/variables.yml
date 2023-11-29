@@ -20,7 +20,7 @@ jobs:
           echo "The Variable stored in env is $MY_NUMBER"
           echo "The Variable stored on the repository is ${{ vars.MY_NUMBER }}"
           NEW_NUMBER=$(( MY_NUMBER + 1 ))
-          gh variable set MY_NUMBER --body $NEW_NUMBER
+          gh variable set MY_NUMBER --body ${NEW_NUMBER}
 
   read-it-again:
     needs: read-variable
