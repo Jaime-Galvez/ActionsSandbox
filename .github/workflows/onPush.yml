@@ -36,9 +36,12 @@ jobs:
 
   do-stuff:
     needs: change-sha
-    if: always() && (needs.change-sha.result == 'success' || needs.change-sha.result == 'skipped')
+    if: always() && (needs.change-sha.result == 'success' || needs.change-sha.result == 'failure')
     runs-on: ubuntu-latest
     steps:
+      - name: "Segmentation Fault: Core Dumped"
+        run: |
+          exit 0
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
         if: github.event_name == 'push' || github.ref_name == env.RELEASE_BRANCH
         run: |
