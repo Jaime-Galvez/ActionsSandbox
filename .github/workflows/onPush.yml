@@ -18,6 +18,9 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - name: "OH NOES, THE EVIL GITHUB GOBLIM CAME AND BROKE THE FLOW!!!11!ONE"
+        run: |
+          exit 1
       - name: "Checkout Code"
         uses: actions/checkout@v4
       - name: "Get the HEAD SHA"
