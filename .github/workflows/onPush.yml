@@ -41,7 +41,7 @@ jobs:
 
   do-stuff:
     needs: change-sha
-    if: ${{ (!failure() && !cancelled())}}
+    if: ${{ (!failure() && !cancelled()) && (needs.change-sha.outputs.cur-head != vars.PREV_HEAD) }}
     runs-on: ubuntu-latest
     steps:
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
