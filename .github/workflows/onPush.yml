@@ -16,6 +16,9 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
+    outputs:
+      cur-head: ${{ steps.get-sha.outputs.cur-head }}
+      benis: ${{ steps.benis.outputs.benis }}
     runs-on: ubuntu-latest
     steps:
       - name: "PENIS MUSIC"
@@ -23,19 +26,24 @@ jobs:
       - name: "Checkout Code"
         uses: actions/checkout@v4
       - name: "Get the HEAD SHA"
+        id: get-sha
         run: |
           echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "cur-head=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: "Do stuff"
+        id: benis
         if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
-        run: | 
+        run: |
+          echo "benis=SEX" >> $GITHUB_OUTPUT
           git branch $RELEASE_BRANCH
           git push -u origin $RELEASE_BRANCH
+          echo ${{ vars.PREV_HEAD }}
           gh variable set PREV_HEAD --body $CUR_HEAD
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
 
   do-stuff:
     needs: change-sha
-    if: ${{ !failure() && !cancelled() }}
+    if: ${{ (!failure() && !cancelled())}}
     runs-on: ubuntu-latest
     steps:
       - name: "Update Release information (IF THE BRANCH WAS CREATED)"
@@ -58,4 +66,6 @@ jobs:
             -d '{"name":"NEXT_MINOR","value":'"$((NEXT_MINOR + 1))"'}'
       - name: "Do stuff"
         run: |
-          echo "Stuff"
+          echo ${{ needs.change-sha.outputs.benis }}
+          echo ${{ needs.change-sha.outputs.cur-head }}
+          echo ${{ vars.PREV_HEAD }}
