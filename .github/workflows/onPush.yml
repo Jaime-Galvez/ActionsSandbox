@@ -33,7 +33,7 @@ jobs:
 
   do-stuff:
     needs: change-sha
-    if: !failure() && !cancelled()
+    if: ${{ !failure() && !cancelled()}}
     runs-on: ubuntu-latest
     steps:
       - name: "Segmentation Fault: Core Dumped"
