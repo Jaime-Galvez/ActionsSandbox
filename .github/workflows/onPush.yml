@@ -21,8 +21,6 @@ jobs:
       benis: ${{ steps.benis.outputs.benis }}
     runs-on: ubuntu-latest
     steps:
-      - name: "PENIS MUSIC"
-        run: exit 1
       - name: "Checkout Code"
         uses: actions/checkout@v4
       - name: "Get the HEAD SHA"
