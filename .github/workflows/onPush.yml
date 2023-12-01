@@ -52,8 +52,6 @@ jobs:
       - name: "Set some data"
         if: github.event_name == 'push' && github.ref_name == env.RELEASE_BRANCH
         run:
-          MINOR=$(${{ github.ref_name }} | cut -d "/" -f 2 | cut -d "." -f 3)
-          echo "THIS_MINOR=$MINOR" >> $GITHUB_ENV
           echo "CUR_HEAD=$(git rev-parse main)" >> $GITHUB_ENV
           sudo apt-get install -y jo
         
