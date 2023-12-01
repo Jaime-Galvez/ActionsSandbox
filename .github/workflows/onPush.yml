@@ -47,14 +47,16 @@ jobs:
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v4
-      - name: "Set some data"
+        with:
+          ref: 'main'
+      - name: "[CREATE ONLY] Set Release branch information"
         if: github.event_name == 'push' && github.ref_name == env.RELEASE_BRANCH
-        run:
+        run: |
           echo "CUR_HEAD=$(git rev-parse main)" >> $GITHUB_ENV
           sudo apt-get install -y jo
         
       # As an Alternative, we can compare the minor version instead of branch names
-      - name: "Update Release information (IF THE BRANCH WAS CREATED)"
+      - name: "[CREATE ONLY] Update Release branch information"
         if: github.event_name == 'push' && github.ref_name == env.RELEASE_BRANCH
         run: |
           HEAD_JSON=$( jo "name=PREV_HEAD" "value=$CUR_HEAD")
@@ -77,6 +79,7 @@ jobs:
             -d $MINOR_JSON
       - name: "Do stuff"
         run: |
+          git checkout ${{ github.ref_name }}
           echo ${{ needs.change-sha.outputs.benis }}
           echo ${{ needs.change-sha.outputs.cur-head }}
           echo ${{ vars.PREV_HEAD }}
