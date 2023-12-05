@@ -27,13 +27,12 @@ jobs:
       - name: "Get the HEAD SHA"
         id: get-sha
         run: |
-          echo "CUR_HEAD=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          echo "cur-head=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "CUR_HEAD=$(git --no-pager log -1 --format=format:%H force-app/main/default)" >> $GITHUB_ENV
+          echo "cur-head=$(git --no-pager log -1 --format=format:%H force-app/main/default)" >> $GITHUB_OUTPUT
       - name: "Do stuff"
         id: benis
         if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
         run: |
-          echo "benis=SEX" >> $GITHUB_OUTPUT
           git branch $RELEASE_BRANCH
           git push -u origin $RELEASE_BRANCH
           echo ${{ vars.PREV_HEAD }}
