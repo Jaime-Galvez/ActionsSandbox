@@ -24,11 +24,14 @@ jobs:
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: "Get the HEAD SHA"
         id: get-sha
         run: |
-          echo "CUR_HEAD=$(git --no-pager log -1 --format=format:%H force-app/main/default)" >> $GITHUB_ENV
-          echo "cur-head=$(git --no-pager log -1 --format=format:%H force-app/main/default)" >> $GITHUB_OUTPUT
+          echo "CUR_HEAD=$(git --no-pager log -1 --format=format:%H -- force-app/main/default)" >> $GITHUB_ENV
+          echo "cur-head=$(git --no-pager log -1 --format=format:%H -- force-app/main/default)" >> $GITHUB_OUTPUT
+          export MY_VAR="YES"
       - name: "Do stuff"
         id: benis
         if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
@@ -38,6 +41,7 @@ jobs:
           echo ${{ vars.PREV_HEAD }}
           gh variable set PREV_HEAD --body $CUR_HEAD
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
+          echo $MY_VAR
 
   do-stuff:
     needs: change-sha
