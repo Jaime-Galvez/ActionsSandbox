@@ -27,7 +27,7 @@ orgs:
 tasks:
   upload_production:
     options:
-      name: PACKAGE_NAME
+      name: COCONUT '56 1.39.0
   assign_permission_sets:
     options:
       api_names: SalesforcePackageEXE, NotAVirusLUL
