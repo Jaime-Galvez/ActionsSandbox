@@ -48,7 +48,7 @@ jobs:
     needs: change-sha
     permissions:
       contents: write
-    if: ${{ needs.change-update-variables.create-package == 'true' }}
+    if: ${{ needs.change-sha.create-package == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Code"
