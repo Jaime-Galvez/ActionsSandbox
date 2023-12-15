@@ -58,7 +58,9 @@ jobs:
       - name: "Replace Stuff"
         run: |
           cp releaseForceignore.txt .forceignore
-          sed -i'' -e "s/PACKAGE_NAME/$VERSION_PREFIX $VERSION_NUMBER/" cumulusci.yml
+          sed -i'' -e "s/PACKAGE_NAME/COCONUT '56 $VERSION_NUMBER/" cumulusci.yml
       - name: "Push to branch to see if the changes were made"
         run: |
+          git add .
+          git commit -m "GITHUB ACTIONS WUZ HERE, LULZ"
           git push origin $RELEASE_BRANCH
