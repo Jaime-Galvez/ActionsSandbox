@@ -38,7 +38,7 @@ jobs:
           git push -u origin $RELEASE_BRANCH
       - name: "Update Variables"
         id: update-variables
-        if: ${{ steps.new-branch.outcome == 'success' || github.ref_name == env.RELEASE_BRANCH }}
+        if: ${{ steps.new-branch.outcome == 'success' || ( github.ref_name == env.RELEASE_BRANCH && env.CUR_HEAD != vars.PREV_HEAD ) }}
         run: |
           gh variable set PREV_HEAD --body $CUR_HEAD
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
