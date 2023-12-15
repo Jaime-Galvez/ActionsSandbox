@@ -61,6 +61,7 @@ jobs:
           sed -i'' -e "s/PACKAGE_NAME/COCONUT '56 $VERSION_NUMBER/" cumulusci.yml
       - name: "Push to branch to see if the changes were made"
         run: |
-          git add .
-          git commit -m "GITHUB ACTIONS WUZ HERE, LULZ"
+          git config --global user.name "Jaime-Galvez"
+          git config --global user.email "jaime-galvez@users.noreply.github.com"
+          git commit -am "GITHUB ACTIONS WUZ HERE, LULZ"
           git push origin $RELEASE_BRANCH
