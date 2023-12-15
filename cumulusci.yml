@@ -1,0 +1,37 @@
+minimum_cumulusci_version: "3.52.0"
+project:
+  name: Imagination
+  package:
+    name: SalesforcePackageEXE
+    namespace: sfpkgexe
+    api_version: "69.0"
+  dependencies:
+    - github: "https://github.com/IBanged/YourMom"
+      tag: rel/4.20.69
+
+  git:
+    default_branch: "main"
+  test:
+    name_match: "%Test%"
+  source_format: sfdx
+orgs:
+  scratch:
+    dev:
+      config_file: orgs/dev.json
+      days: 7
+      namespaced: True
+    ci:
+      config_file: orgs/dev.json
+      days: 1
+      namespaced: True
+tasks:
+  upload_production:
+    options:
+      name: PACKAGE_NAME
+  assign_permission_sets:
+    options:
+      api_names: SalesforcePackageEXE, NotAVirusLUL
+
+sources:
+  YourMom:
+    github: https://github.com/IBanged/YourMom

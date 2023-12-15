@@ -11,15 +11,15 @@ env:
   GH_TOKEN: ${{ secrets.TOLKIEN }}
   NEXT_MINOR: ${{ vars.NEXT_MINOR }}
   RELEASE_BRANCH: "release/${{vars.MAYOR}}.${{vars.NEXT_MINOR}}.0"
+  SALESFORCE_VERSION: ${{ vars.SALESFORCE_VERSION }}
+  VERSION_NUMBER: "${{ vars.MAYOR }}.${{ vars.NEXT_MINOR }}.0"
 
 jobs:
   change-sha:
-    if: github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
     outputs:
-      cur-head: ${{ steps.get-sha.outputs.cur-head }}
-      benis: ${{ steps.benis.outputs.benis }}
+      create-package: ${{ steps.update-variables.outputs.create-package }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Code"
@@ -30,59 +30,35 @@ jobs:
         id: get-sha
         run: |
           echo "CUR_HEAD=$(git --no-pager log -1 --format=format:%H -- force-app/main/default)" >> $GITHUB_ENV
-          echo "cur-head=$(git --no-pager log -1 --format=format:%H -- force-app/main/default)" >> $GITHUB_OUTPUT
-          export MY_VAR="YES"
-      - name: "Do stuff"
-        id: benis
-        if: ${{ env.CUR_HEAD != vars.PREV_HEAD }}
+      - name: "Create Branch"
+        id: new-branch
+        if: ${{ github.event_name == 'workflow_dispatch' && env.CUR_HEAD != vars.PREV_HEAD }}
         run: |
           git branch $RELEASE_BRANCH
           git push -u origin $RELEASE_BRANCH
-          echo ${{ vars.PREV_HEAD }}
+      - name: "Update Variables"
+        id: update-variables
+        if: ${{ steps.new-branch.outcome == 'success' || github.ref_name == env.RELEASE_BRANCH }}
+        run: |
           gh variable set PREV_HEAD --body $CUR_HEAD
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
-          echo $MY_VAR
+          echo "create-package='true'" >> $GITHUB_OUTPUT
 
   do-stuff:
     needs: change-sha
-    if: ${{ (!failure() && !cancelled()) && (needs.change-sha.outputs.cur-head != vars.PREV_HEAD) }}
+    permissions:
+      contents: write
+    if: ${{ needs.change-update-variables.create-package == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v4
         with:
-          ref: 'main'
-      - name: "[CREATE ONLY] Set Release branch information"
-        if: github.event_name == 'push' && github.ref_name == env.RELEASE_BRANCH
+          ref: ${{ env.RELEASE_BRANCH }}
+      - name: "Replace Stuff"
         run: |
-          echo "CUR_HEAD=$(git rev-parse main)" >> $GITHUB_ENV
-          sudo apt-get install -y jo
-        
-      # As an Alternative, we can compare the minor version instead of branch names
-      - name: "[CREATE ONLY] Update Release branch information"
-        if: github.event_name == 'push' && github.ref_name == env.RELEASE_BRANCH
+          cp releaseForceignore.txt .forceignore
+          sed -i'' -e "s/PACKAGE_NAME/$VERSION_PREFIX $VERSION_NUMBER/" cumulusci.yml
+      - name: "Push to branch to see if the changes were made"
         run: |
-          HEAD_JSON=$( jo "name=PREV_HEAD" "value=$CUR_HEAD")
-          MINOR_JSON=$( jo "name=NEXT_MINOR" "value=$(( $NEXT_MINOR + 1 ))")
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/Veevarts/NFPFundraising/actions/variables/PREV_HEAD \
-            -d $HEAD_JSON
-
-          NEXT_MINOR_TMP=$((NEXT_MINOR + 1))
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/Veevarts/NFPFundraising/actions/variables/NEXT_MINOR \
-            -d $MINOR_JSON
-      - name: "Do stuff"
-        run: |
-          git checkout ${{ github.ref_name }}
-          echo ${{ needs.change-sha.outputs.benis }}
-          echo ${{ needs.change-sha.outputs.cur-head }}
-          echo ${{ vars.PREV_HEAD }}
+          git push origin $RELEASE_BRANCH
