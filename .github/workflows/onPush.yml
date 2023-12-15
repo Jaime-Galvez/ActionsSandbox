@@ -42,13 +42,13 @@ jobs:
         run: |
           gh variable set PREV_HEAD --body $CUR_HEAD
           gh variable set NEXT_MINOR --body $((NEXT_MINOR + 1))
-          echo "create-package=true" >> $GITHUB_OUTPUT
+          echo "create-package='true'" >> $GITHUB_OUTPUT
 
   do-stuff:
     needs: change-sha
     permissions:
       contents: write
-    if: ${{ needs.change-sha.create-package == 'true' }}
+    if: ${{ needs.change-sha.outputs.create-package == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Code"
