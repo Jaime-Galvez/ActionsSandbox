@@ -6,3 +6,4 @@ txt
 sex
 tex
 mex
+lex
