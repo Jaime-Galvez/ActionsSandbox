@@ -7,3 +7,4 @@ sex
 tex
 mex
 lex
+fex
